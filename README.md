@@ -32,6 +32,14 @@
 本アプリ及びソースコードの著作権はCode for Kanazawaに帰属します。
 但し、このソースコードは[MPL](http://www.mozilla.org/MPL/2.0/)のもと配布されています。MPLに従えば、どなたでも利用、改変、及び再配布が可能です。
 
+## 広島版について
+
+* [5374 for Hiroshima](http://hiroshima.5374.jp)
+
+広島版は[すごい広島](http://great-h.github.io/)によってデータが作成されました。CSVの作成には、[5374-csv-generator-in-hiroshima](https://github.com/great-h/5374-csv-generator-in-hiroshima)を利用しています。
+
+[要望などありましたら、お気軽にご連絡ください。](https://github.com/great-h/5374/issues)
+
 ## 5374をあなたの地域に導入したい場合について
 
 あなたの地域で5374を立ち上げたい場合、以下のドキュメントがきっと役立ちます。ご参考ください。
