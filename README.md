@@ -38,6 +38,8 @@
 
 広島版は[すごい広島](http://great-h.github.io/)によってデータが作成されました。CSVの作成には、[5374-csv-generator-in-hiroshima](https://github.com/great-h/5374-csv-generator-in-hiroshima)を利用しています。
 
+また、配色やSVGファイルの作成に[株式会社 織](http://shikiori.com/)にお力を貸していただきました。ありがとうございます。
+
 [要望などありましたら、お気軽にご連絡ください。](https://github.com/great-h/5374/issues)
 
 ## 5374をあなたの地域に導入したい場合について
