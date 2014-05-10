@@ -310,16 +310,28 @@ $(function() {
   var center_data = new Array();
   var descriptions = new Array();
   var areaModels = new Array();
+  var areaGroup = new Object();
+  var groupOrder = new Array();
   var remarks = new Array();
 /*   var descriptions = new Array(); */
 
 
   function getSelectedAreaName() {
-    return localStorage.getItem("selected_area_name");
+    var val = localStorage.getItem("selected_area_name");
+    return val ? val : -1;
   }
 
   function setSelectedAreaName(name) {
     localStorage.setItem("selected_area_name", name);
+  }
+
+  function getSelectedGroupName() {
+    var val = localStorage.getItem("selected_group_name");
+    return val ? val : -1;
+  }
+
+  function setSelectedGroupName(name) {
+    localStorage.setItem("selected_group_name", name);
   }
 
   function csvToArray(filename, cb) {
@@ -348,6 +360,18 @@ $(function() {
       for (var i in tmp) {
         var row = tmp[i];
         var area = new AreaModel();
+        var areas = row[0].split(" ");
+        var group_name = areas.shift();
+        if (!areaGroup.hasOwnProperty(group_name)) {
+            areaGroup[group_name] = new Object();
+            groupOrder.push(group_name);
+        }
+        var group = areaGroup[group_name];
+        for (var j in areas) {
+            var area_name = areas[j];
+            if (area_name == "" || area_name == " ") continue;
+            group[area_name] = area;
+        }
         area.label = row[0];
         area.centerName = row[1];
 
@@ -378,30 +402,63 @@ $(function() {
           var area = areaModels[i];
           area.setCenter(center_data);
         };
-        //エリアとゴミ処理センターを対応後に、表示のリストを生成する。
-        //ListメニューのHTML作成
-        var selected_name = getSelectedAreaName();
-        var area_select_form = $("#select_area");
-        var select_html = "";
-        select_html += '<option value="-1">地域を選択してください</option>';
-        for (var row_index in areaModels) {
-          var area_name = areaModels[row_index].label;
-          var selected = (selected_name == area_name) ? 'selected="selected"' : "";
-
-          select_html += '<option value="' + row_index + '" ' + selected + " >" + area_name + "</option>";
-        }
+        createSelectBox();
 
         //デバッグ用
         if (typeof dump == "function") {
           dump(areaModels);
         }
-        //HTMLへの適応
-        area_select_form.html(select_html);
-        area_select_form.change();
       });
     });
   }
 
+  function createSelectBox () {
+    var $select_area = $('#select_area');
+    var $select_group = $('#select_group');
+    var selected_group = $select_group.val();
+    $select_area.hide();
+    var options_html = '<option value="-1" selected="selected">区を選択してください</option>';
+    for (var i in groupOrder) {
+      var group = groupOrder[i];
+      options_html += '<option value="' + group + '">' + group + '</option>';
+    }
+    $select_group.change(function (elem) {
+      if ($select_group.val() == -1) {
+        $select_area.val(-1);
+        $select_area.hide();
+        return;
+      }
+      createAreaSelect();
+      $("#accordion").html("");
+      $select_area.show();
+      $select_area.val(-1);
+      $select_area.change();
+    });
+    $select_group.html(options_html);
+    var value = getSelectedGroupName();
+    $select_group.val(value);
+    createAreaSelect();
+    console.log(value);
+    if (value != -1) { $select_area.show(); }
+    $select_area.val(getSelectedAreaName());
+    onChangeSelect(getSelectedGroupName(), getSelectedAreaName());
+  }
+
+  function createAreaSelect() {
+    var $select_area = $('#select_area');
+    var $select_group = $('#select_group');
+    var select_html = "";
+    var selected_name = getSelectedAreaName();
+    select_html += '<option value="-1">地域を選択してください</option>';
+    var group = areaGroup[$select_group.val()];
+    for (var area_name in group) {
+      var selected = (selected_name == area_name) ? 'selected="selected"': '';
+      select_html += '<option value="' + area_name + '" ' + selected + '>' + area_name + '</option>';
+    }
+    $select_area.html(select_html);
+    $select_area.insertAfter($select_group);
+    $select_area.val(selected_name);
+  }
 
   function createMenuList(after_action) {
     // 備考データを読み込む
@@ -439,13 +496,14 @@ $(function() {
 
   }
 
-  function updateData(row_index) {
+  function updateData(group_name, area_name) {
     //SVG が使えるかどうかの判定を行う。
     //TODO Android 2.3以下では見れない（代替の表示も含め）不具合が改善されてない。。
     //参考 http://satussy.blogspot.jp/2011/12/javascript-svg.html
     var ableSVG = (window.SVGAngle !== void 0);
     //var ableSVG = false;  // SVG未使用の場合、descriptionの1項目目を使用
-    var areaModel = areaModels[row_index];
+    var group = areaGroup[group_name];
+    var areaModel = group[area_name];
     var today = new Date();
     //直近の一番近い日付を計算します。
     areaModel.calcMostRect();
@@ -556,21 +614,27 @@ $(function() {
     });
   }
 
-  function onChangeSelect(row_index) {　
-    if (row_index == -1) {
+  function onChangeSelect(group_name, area_name) {　
+    if (group_name == -1) {
+      setSelectedGroupName(-1);
       $("#accordion").html("");
-      setSelectedAreaName("");
       return;
     }
-    setSelectedAreaName(areaModels[row_index].label);
+    if (area_name == -1) {
+      setSelectedAreaName(-1);
+      $("#accordion").html("");
+      return;
+    }
+    setSelectedGroupName(group_name);
+    setSelectedAreaName(area_name);
 
     if ($("#accordion").children().length === 0 && descriptions.length === 0) {
 
       createMenuList(function() {
-        updateData(row_index);
+        updateData(group_name, area_name);
       });
     } else {
-      updateData(row_index);
+      updateData(group_name, area_name);
     }
   }
 
@@ -586,8 +650,9 @@ $(function() {
   }
   //リストが選択されたら
   $("#select_area").change(function(data) {
-    var row_index = $(data.target).val();
-    onChangeSelect(row_index);
+    var area_name = $(data.target).val();
+    var group_name = $("#select_group").val();
+    onChangeSelect(group_name, area_name);
   });
 
   //-----------------------------------
