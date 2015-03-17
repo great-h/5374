@@ -46,6 +46,9 @@ var AreaModel = function() {
   ゴミのカテゴリのソートを行います。
 */
   this.sortTrash = function() {
+    this.trash = this.trash.filter(function(t) {
+      return t.mostRecent;
+    });
     this.trash.sort(function(a, b) {
       var at = a.mostRecent.getTime();
       var bt = b.mostRecent.getTime();
