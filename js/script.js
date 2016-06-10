@@ -114,20 +114,19 @@ var TrashModel = function(_lable, _cell, remarks) {
     monthList+="月 "
     result_text=monthList+result_text
   }
-  if (result_text == "") { result_text  = "不定期 "; }
+  if (result_text == "") { result_text  = ""; }
 
   this.dayLabel = result_text;
 
+  var day_enum = ["日", "月", "火", "水", "木", "金", "土"];
 
   this.getDateLabel = function() {
     if (this.mostRecent === undefined) {
 	return this.getRemark() + "不明";
     }
-    var result_text = this.mostRecent.getFullYear() + "/" + (1 + this.mostRecent.getMonth()) + "/" + this.mostRecent.getDate();
+      var result_text = this.mostRecent.getFullYear() + "/" + (1 + this.mostRecent.getMonth()) + "/" + this.mostRecent.getDate() + ' (' + day_enum[this.mostRecent.getDay()] + ')';
     return this.getRemark() + this.dayLabel + " " + result_text;
   }
-
-  var day_enum = ["日", "月", "火", "水", "木", "金", "土"];
 
   function getDayIndex(str) {
     for (var i = 0; i < day_enum.length; i++) {
