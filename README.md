@@ -37,8 +37,15 @@ For English please see [LOCALIZE_en.md](LOCALIZE_en.md).
 
 * [5374 for Hiroshima](http://hiroshima.5374.jp)
 
-広島版は[すごい広島](http://great-h.github.io/)によってデータが作成されました。CSVの作成には、[5374-csv-generator-in-hiroshima](https://github.com/great-h/5374-csv-generator-in-hiroshima)を利用しています。
+広島版は[Code for Hiroshima](http://code4hiroshima.org/)によって運営されています。
+
+データの作成は[すごい広島](http://great-h.github.io/)によってデータ行われました。
+CSVの作成には、[5374-csv-generator-in-hiroshima](https://github.com/great-h/5374-csv-generator-in-hiroshima)と[to5374areadaysCSV](https://github.com/great-h/to5374areadaysCSV)を利用しています。
 
 また、配色やSVGファイルの作成に[株式会社 織](http://shikiori.com/)にお力を貸していただきました。ありがとうございます。
 
 [要望などありましたら、お気軽にご連絡ください。](https://github.com/great-h/5374/issues)
+
+ゴミの収集日の情報は「広島市 環境局業務部業務第一課」が公開している「[平成２８年度家庭ゴミ収集日程表](http://www.city.hiroshima.lg.jp/www/opendatamain/contents/1464164589110/index.html)」を基にしています。平成２８年度家庭ゴミ収集日程表はCC－BY(表示)で公開されています。
+
+[![ccby](http://www.city.hiroshima.lg.jp/www/image/opendata/ccby.png)](http://creativecommons.org/licenses/by/4.0/deed.ja)
