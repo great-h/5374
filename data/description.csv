@@ -1,9 +1,9 @@
 label,sublabel,description,styles,bgcolor
-可燃ゴミ,,,img/kanen.svg,#EE7144
+可燃ごみ,,,img/kanen.svg,#EE7144
 ペットボトル,,,img/pet.svg,#46BBD0
 リサイクルプラ,,,img/recyclepura.svg,#52D6BC
-資源ゴミ,,,img/shigen.svg,#8ECC55
-有害ゴミ,,,img/yugai.svg,#BA6AE3
+資源ごみ,,,img/shigen.svg,#8ECC55
+有害ごみ,,,img/yugai.svg,#BA6AE3
 その他プラ,,,img/sonotapura.svg,#E3618A
-大型ゴミ,,,img/oogata.svg,#EDBB64
-不燃ゴミ,,,img/funen.svg,#7D75ED
+大型ごみ,,,img/oogata.svg,#EDBB64
+不燃ごみ,,,img/funen.svg,#7D75ED
